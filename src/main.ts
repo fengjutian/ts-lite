@@ -56,6 +56,22 @@ class Lexer {
       let ch = this.peek();
       if (/\s/.test(ch)) { this.nextChar(); continue; }
 
+      // 修改这里：将 < 和 > 作为 Punctuator 而不是 Operator
+      if ("(){}:;=,[]|.<>".includes(ch)) {
+        this.nextChar();
+        const loc = this.makeLoc(start, this.idx);
+        yield { kind: TokenKind.Punctuator, value: ch, loc };
+        continue;
+      }
+
+      // 运算符处理
+      if ("+-*/<>".includes(ch)) {
+        this.nextChar();
+        const loc = this.makeLoc(start, this.idx);
+        yield { kind: TokenKind.Operator, value: ch, loc };
+        continue;
+      }
+
       // identifier / keyword
       if (this.isAlpha(ch)) {
         let s = "";
@@ -96,9 +112,9 @@ class Lexer {
       // punctuation / operator
       const single = this.nextChar();
       const loc = this.makeLoc(start, this.idx);
-      if ("(){}:;=,+-*/<>[]|.,<>".includes(single)) {
+      if ("(){}:;=,+-*/<>[]|.,".includes(single)) {
         // treat many as punctuator except common operators
-        const opChars = "=+-*/<>|";
+        const opChars = "=+-*/";
         const kind = opChars.includes(single) ? TokenKind.Operator : TokenKind.Punctuator;
         yield { kind: kind as TokenKind, value: single, loc };
         continue;
