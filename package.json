@@ -5,12 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm src/main.ts",
-    "debug": "node --inspect-brk --loader ts-node/esm src/main.ts",
-    "test": "vitest"
+    "start": "node --loader ts-node/esm src/ts-lite.ts",
+    "debug": "node --inspect-brk --loader ts-node/esm src/ts-lite.ts",
+    "test": "vitest",
+    "build": "tsc"
   },
   "bin": {
-    "ts-lite": "./dist/index.js"
+    "ts-lite": "./dist/ts-lite.js"
   },
   "keywords": [],
   "author": "",
