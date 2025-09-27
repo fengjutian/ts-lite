@@ -656,7 +656,7 @@ function run(src: string) {
   return { ast, errors: tc.errors, js };
 }
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   console.log("\n--- Running good example ---");
   run(example);
   console.log("\n--- Running bad example ---");
