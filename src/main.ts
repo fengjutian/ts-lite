@@ -54,18 +54,43 @@ class Lexer {
     while (this.idx < this.src.length) {
       const start = this.idx;
       let ch = this.peek();
+      // whitespace
       if (/\s/.test(ch)) { this.nextChar(); continue; }
 
-      // 修改这里：将 < 和 > 作为 Punctuator 而不是 Operator
-      if ("(){}:;=,[]|.<>".includes(ch)) {
+      // two-char operator check MUST come before single-char operator handling
+      const two = this.peek(0) + this.peek(1);
+      if (two === "=>") { this.nextChar(); this.nextChar(); const loc = this.makeLoc(start, this.idx); yield { kind: TokenKind.Operator, value: "=>", loc }; continue; }
+
+      // comments: must check before treating '/' as operator
+      if (ch === "/") {
+        if (this.peek(1) === "/") {
+          // single-line comment: consume until newline (but keep newline for outer loop)
+          this.nextChar(); // consume '/'
+          this.nextChar(); // consume second '/'
+          while (this.peek() && this.peek() !== "\n") this.nextChar();
+          continue; // skip comment
+        } else if (this.peek(1) === "*") {
+          // block comment
+          this.nextChar(); // '/'
+          this.nextChar(); // '*'
+          while (this.idx < this.src.length) {
+            if (this.peek() === "*" && this.peek(1) === "/") { this.nextChar(); this.nextChar(); break; }
+            this.nextChar();
+          }
+          continue; // skip comment
+        }
+      }
+
+      // punctuation (treat < and > as punctuators for type args)
+      if ("(){}:;,[].<>".includes(ch)) {
         this.nextChar();
         const loc = this.makeLoc(start, this.idx);
         yield { kind: TokenKind.Punctuator, value: ch, loc };
         continue;
       }
 
-      // 运算符处理
-      if ("+-*/<>".includes(ch)) {
+      // operator single-char (note '/' handled here only if not a comment)
+      if ("=+-*/|".includes(ch)) {
         this.nextChar();
         const loc = this.makeLoc(start, this.idx);
         yield { kind: TokenKind.Operator, value: ch, loc };
@@ -105,26 +130,15 @@ class Lexer {
         continue;
       }
 
-      // two-char operator
-      const two = this.peek(0) + this.peek(1);
-      if (two === "=>" ) { this.nextChar(); this.nextChar(); const loc = this.makeLoc(start, this.idx); yield { kind: TokenKind.Operator, value: "=>", loc }; continue; }
-
-      // punctuation / operator
-      const single = this.nextChar();
-      const loc = this.makeLoc(start, this.idx);
-      if ("(){}:;=,+-*/<>[]|.,".includes(single)) {
-        // treat many as punctuator except common operators
-        const opChars = "=+-*/";
-        const kind = opChars.includes(single) ? TokenKind.Operator : TokenKind.Punctuator;
-        yield { kind: kind as TokenKind, value: single, loc };
-        continue;
-      }
-
-      // unknown -> skip
+      // unknown -> skip single char (could also throw)
+      this.nextChar();
     }
     const eofLoc = this.makeLoc(this.idx, this.idx);
     yield { kind: TokenKind.EOF, value: "", loc: eofLoc };
   }
+
+
+
 }
 
 // ---------- AST Types ----------
@@ -261,7 +275,7 @@ class Parser {
 
   parseBinary(): ASTNode {
     let left = this.parseCallOrPrimary();
-    while (this.peek().kind === TokenKind.Operator && ["+", "-", "*", "/", "<", ">", "|", "="].includes(this.peek().value)) {
+    while (this.peek().kind === TokenKind.Operator && ["+", "-", "*", "/", "|", "="].includes(this.peek().value)) {
       const op = this.peek().value; this.i++;
       const right = this.parseCallOrPrimary();
       left = { type: "Binary", op, left, right };
