@@ -1,7 +1,7 @@
 import { Token } from './types.ts';
 import { TokenKind, TypeNode, ASTNode } from './schema.ts';
 
-class Parser {
+export class Parser {
   tokens: Token[];
   i = 0;
   constructor(tokens: Token[]) { this.tokens = tokens; }
