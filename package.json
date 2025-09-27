@@ -6,16 +6,20 @@
   "type": "module",
   "scripts": {
     "start": "node --loader ts-node/esm src/main.ts",
-    "debug": "node --inspect-brk --loader ts-node/esm src/main.ts"
+    "debug": "node --inspect-brk --loader ts-node/esm src/main.ts",
+    "test": "vitest"
+  },
+  "bin": {
+    "ts-lite": "./dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^24.5.2",
-    "tsconfig-paths": "^4.2.0"
-  },
-  "dependencies": {
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   }
 }
