@@ -1,4 +1,5 @@
-import { Token, TokenKind, Loc } from "./schema.js";
+import { Token, TokenKind } from "./types.js";
+import { Loc } from "./schema.js";
 
 export class Lexer {
   src: string;

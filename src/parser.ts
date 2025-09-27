@@ -1,4 +1,5 @@
-import { Token, TokenKind, TypeNode, ASTNode } from './schema.ts';
+import { Token, TokenKind } from './types.js';
+import { TypeNode, ASTNode } from './schema.js';
 
 export class Parser {
   tokens: Token[];
