@@ -1,4 +1,4 @@
-import { Token, TokenKind, Loc } from "./types.ts";
+import { Token, TokenKind, Loc } from "./schema.js";
 
 export class Lexer {
   src: string;

@@ -6,9 +6,8 @@
     "esModuleInterop": true,
     "strict": true,
     "outDir": "./dist",
-    // 移除 "allowImportingTsExtensions"，因为当前未设置 "noEmit" 或 "emitDeclarationOnly"
-    // 只有在设置“noEmit”或“emitDeclarationOnly”时，才能使用选项“allowImportingTsExtensions”
-    "noEmit": false
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

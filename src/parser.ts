@@ -1,5 +1,4 @@
-import { Token } from './types.ts';
-import { TokenKind, TypeNode, ASTNode } from './schema.ts';
+import { Token, TokenKind, TypeNode, ASTNode } from './schema.ts';
 
 export class Parser {
   tokens: Token[];
@@ -209,8 +208,9 @@ export class Parser {
   }
 }
 
-export function parse(src: string) {
-  const lexer = new (require('./lexer').Lexer)(src);
-  const tokens = Array.from(lexer.tokens());
+import { tokenize } from './lexer.js';
+
+export function parse(src: string): ASTNode {
+  const tokens = tokenize(src);
   return new Parser(tokens).parseProgram();
 }

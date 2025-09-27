@@ -1,11 +1,12 @@
-import { tokenize } from './lexer.ts';
-import { Parser } from './parser.ts';
-import { typeCheck } from './typechecker.ts';
+import { tokenize } from './lexer.js';
+import { parse } from './parser.js';
+import { typeCheck } from './typechecker.js';
 import { generateCode } from './codegen.js';
+import { ASTNode } from './schema.js';
 
-export function run(source: string) {
+export function run(source: string): { tokens: any[]; ast: ASTNode; errors: any[]; js: string } {
   const tokens = tokenize(source);
-  const ast = new Parser(tokens).parseProgram();
+  const ast = parse(source);
   const errors = typeCheck(ast);
   const js = generateCode(ast);
   return { tokens, ast, errors, js };

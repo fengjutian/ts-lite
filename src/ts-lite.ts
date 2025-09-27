@@ -13,12 +13,12 @@ function main() {
     const result = run(code);
     console.log(JSON.stringify(result, null, 2));
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Error:', error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
 }
 
-if (require.main === module) {
+if (typeof require !== 'undefined' && require.main === module) {
   main();
 }
 
