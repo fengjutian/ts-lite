@@ -58,4 +58,4 @@ v = true; // 应该报错
 
 function foo<T>(x: T, y: T): T { return x; }
 let z = foo(1, "s"); // 推断冲突 -> 当前允许但会警告参数不匹配
-}`
+`
