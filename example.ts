@@ -12,7 +12,7 @@ export function identity<T>(value: T): T {
 
 // 联合类型
 function processValue(value: number | string): void {
-  if (typeof value === 'number') {
+  if (typeof(value) === 'number') {
     console.log(`Processing number: ${value}`);
   } else {
     console.log(`Processing string: ${value}`);
