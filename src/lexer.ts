@@ -116,5 +116,5 @@ export class Lexer {
 }
 
 export function tokenize(src: string): Token[] {
-  return Array.from(new Lexer(src).tokens());
+  return Array.from(new Lexer(src).tokens()).filter(token => token.kind !== TokenKind.EOF);
 }
