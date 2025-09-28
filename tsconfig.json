@@ -6,7 +6,6 @@
     "esModuleInterop": true,
     "strict": true,
     "outDir": "./dist",
-    "allowImportingTsExtensions": true,
     "noEmit": false
   },
   "include": ["src/**/*"],
