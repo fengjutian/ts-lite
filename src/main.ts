@@ -1,8 +1,3 @@
-// myts-lite-advanced-full.ts
-// Minimal TypeScript-like language (single file)
-// Features: lexer, parser, AST, type checker with Union Types and basic Generics, and type-erasing CodeGen.
-// Run: npx ts-node myts-lite-advanced-full.ts
-
 type Pos = { line: number; col: number };
 type Loc = { start: Pos; end: Pos };
 

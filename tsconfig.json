@@ -7,7 +7,7 @@
     "strict": true,
     "outDir": "./dist",
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
